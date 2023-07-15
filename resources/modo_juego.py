@@ -8,6 +8,11 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from random import choice
 from tkinter import messagebox
+import customtkinter
+
+class modo_juego(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
 
 resources_path = getattr(sys, "_MEIPASS", "./resources")
 
@@ -104,7 +109,7 @@ def update_frame():
         label.config(image=image)
         label.image = image
 
-        predicted_label.config(text=predicted_character)
+        predicted_label.configure(text=predicted_character)
 
         if (
             predicted_character.upper() == current_letter.upper()
@@ -160,7 +165,7 @@ def show_success_message():
         success_label = tk.Label(success_window, text="Has acertado la letra.")
         success_label.pack()
 
-        accept_button = tk.Button(
+        accept_button = customtkinter.CTkButton(
             success_window, text="Aceptar", command=success_window.destroy
         )
         accept_button.pack()
@@ -182,8 +187,8 @@ def next_letter():
     is_message_shown = False
     is_letter_saved = False
     current_letter = choice(letters)
-    instruction_label.config(text="Haz la siguiente letra:")
-    letter_label.config(text=current_letter)
+    instruction_label.configure(text="Haz la siguiente letra:")
+    letter_label.configure(text=current_letter)
 
 
 def save_gesture(event):
@@ -207,10 +212,10 @@ def save_gesture(event):
             messagebox.showinfo("Advertencia", "No se ha detectado ningún gesto")
     is_letter_saved = False
 
-window = tk.Tk()
+window = customtkinter.CTk()
 window.title("CamSingGT")
 window.geometry("1080x720")
-window.state('zoomed')
+window.after(0, lambda:window.state('zoomed'))
 
 logo_path = os.path.join(resources_path, "logo.ico")
 window.iconbitmap(logo_path)
@@ -219,13 +224,13 @@ window.wm_iconbitmap(logo_path)
 label = tk.Label(window)
 label.pack()
 
-predicted_label = tk.Label(window, font=("Helvetica", 30))
+predicted_label = customtkinter.CTkLabel(window, font=("Helvetica", 30))
 predicted_label.pack()
 
-instruction_label = tk.Label(window, font=("Helvetica", 20), pady=20)
+instruction_label = customtkinter.CTkLabel(window, font=("Helvetica", 20), pady=20)
 instruction_label.pack()
 
-letter_label = tk.Label(window, font=("Helvetica", 30))
+letter_label = customtkinter.CTkLabel(window, font=("Helvetica", 30))
 letter_label.pack()
 
 cap = cv2.VideoCapture(0)

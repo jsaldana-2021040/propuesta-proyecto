@@ -6,6 +6,11 @@ import mediapipe as mp
 import numpy as np
 import tkinter as tk
 from PIL import Image, ImageTk
+import customtkinter
+
+class modo_normal(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
 
 resources_path = getattr(sys, "_MEIPASS", "./resources")
 
@@ -91,17 +96,17 @@ def update_frame():
         image = Image.fromarray(cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB))
         image = ImageTk.PhotoImage(image)
 
-        label.config(image=image)
+        label.configure(image=image)
         label.image = image
 
-        predicted_label.config(text=predicted_character)
+        predicted_label.configure(text=predicted_character)
 
     label.after(1, update_frame)
 
-window = tk.Tk()
+window = customtkinter.CTk()
 window.title("CamSingGT")
 window.geometry("800x600")
-window.state('zoomed')
+window.after(0, lambda:window.state('zoomed'))
 
 logo_path = os.path.join(resources_path, "logo.ico")
 window.iconbitmap(logo_path)
@@ -110,7 +115,7 @@ window.wm_iconbitmap(logo_path)
 label = tk.Label(window)
 label.place(x=360, y=100)
 
-predicted_label = tk.Label(window, font=("Helvetica", 30))
+predicted_label = customtkinter.CTkLabel(window, font=("Helvetica", 30))
 predicted_label.pack()
 
 cap = cv2.VideoCapture(0)
