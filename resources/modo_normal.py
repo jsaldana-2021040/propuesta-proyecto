@@ -98,21 +98,21 @@ def update_frame():
 
     label.after(1, update_frame)
 
-
-# Crear la ventana principal
 window = tk.Tk()
-window.title("Hand Gesture Recognition")
+window.title("CamSingGT")
 window.geometry("800x600")
+window.state('zoomed')
 
-# Crear una etiqueta para mostrar el video
+logo_path = os.path.join(resources_path, "logo.ico")
+window.iconbitmap(logo_path)
+window.wm_iconbitmap(logo_path)
+
 label = tk.Label(window)
-label.pack()
+label.place(x=360, y=100)
 
-# Crear una etiqueta para mostrar el carácter predicho
 predicted_label = tk.Label(window, font=("Helvetica", 30))
 predicted_label.pack()
 
-# Abrir la captura de video
 cap = cv2.VideoCapture(0)
 
 # Iniciar la actualización del video

@@ -126,7 +126,7 @@ def update_frame():
 
 def show_failure_message():
     global is_message_shown, is_letter_saved
-    if is_letter_saved:  # Check if the letter was saved
+    if is_letter_saved:
         is_message_shown = True
         result = messagebox.askyesno(
             "¡Incorrecto!", "Has fallado. ¿Quieres intentarlo de nuevo?"
@@ -142,7 +142,7 @@ def show_failure_message():
 
 def show_success_message():
     global is_message_shown, is_letter_saved
-    if is_letter_saved:  # Check if the letter was saved
+    if is_letter_saved:
         is_message_shown = True
         success_window = tk.Toplevel(window)
         success_window.title("¡Correcto!")
@@ -188,7 +188,7 @@ def next_letter():
 
 def save_gesture(event):
     global current_letter, is_letter_saved
-    if event.keysym == "Return":
+    if event.keysym == "space":
         current_gesture = predicted_label["text"]
         if current_gesture.upper() in letters:
             is_letter_saved = True
@@ -207,33 +207,31 @@ def save_gesture(event):
             messagebox.showinfo("Advertencia", "No se ha detectado ningún gesto")
     is_letter_saved = False
 
-
-# Crear la ventana principal
 window = tk.Tk()
-window.title("Hand Gesture Recognition")
+window.title("CamSingGT")
 window.geometry("1080x720")
+window.state('zoomed')
 
-# Crear una etiqueta para mostrar el video
+logo_path = os.path.join(resources_path, "logo.ico")
+window.iconbitmap(logo_path)
+window.wm_iconbitmap(logo_path)
+
 label = tk.Label(window)
 label.pack()
 
-# Crear una etiqueta para mostrar el carácter predicho
 predicted_label = tk.Label(window, font=("Helvetica", 30))
 predicted_label.pack()
 
-# Crear una etiqueta para la indicación de la letra
 instruction_label = tk.Label(window, font=("Helvetica", 20), pady=20)
 instruction_label.pack()
 
-# Crear una etiqueta para mostrar la letra actual
 letter_label = tk.Label(window, font=("Helvetica", 30))
 letter_label.pack()
 
-# Abrir la captura de video
 cap = cv2.VideoCapture(0)
 
 # Vincular el evento <KeyRelease-Return> a la función save_gesture()
-window.bind("<KeyRelease-Return>", save_gesture)
+window.bind("<KeyRelease-space>", save_gesture)
 
 # Iniciar la actualización del video
 update_frame()

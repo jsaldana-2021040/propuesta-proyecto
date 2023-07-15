@@ -16,8 +16,17 @@ def modo_juego():
 
 # Crear la ventana principal
 window = tk.Tk()
-window.title("Hand Gesture Recognition")
+window.title("CamSingGT")
 window.geometry("400x200")
+
+window.update()
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+window_width = window.winfo_width()
+window_height = window.winfo_height()
+x = (screen_width - window_width) // 2
+y = (screen_height - window_height) // 2
+window.geometry(f"+{x}+{y}")
 
 # Estilo de los botones
 button_style = {
@@ -27,17 +36,18 @@ button_style = {
     "relief": "raised",
 }
 
-# Crear un botón para ejecutar el código original
-original_button = tk.Button(
+logo_path = os.path.join(resources_path, "logo.ico")
+window.iconbitmap(logo_path)
+window.wm_iconbitmap(logo_path)
+
+modo_Normal = tk.Button(
     window, text="Modo libre", command=modo_normal, **button_style
 )
-original_button.pack(pady=10)
+modo_Normal.pack(pady=10)
 
-# Crear un botón para ejecutar el código modificado
-modified_button = tk.Button(
+modo_Juego = tk.Button(
     window, text="Modo de juego", command=modo_juego, **button_style
 )
-modified_button.pack(pady=10)
+modo_Juego.pack(pady=10)
 
-# Iniciar el bucle de eventos de Tkinter
 window.mainloop()
