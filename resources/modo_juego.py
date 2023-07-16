@@ -27,7 +27,7 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 labels_dict = {i: chr(65 + i) for i in range(26)}
 labels_dict[-1] = "Unknown"
 
-letters = [chr(65 + i) for i in range(5)]
+letters = [chr(65 + i) for i in range(26)]
 
 current_letter = choice(letters)
 is_message_shown = False  # Variable para rastrear si el mensaje ya se ha mostrado
@@ -194,7 +194,7 @@ def next_letter():
 def save_gesture(event):
     global current_letter, is_letter_saved
     if event.keysym == "space":
-        current_gesture = predicted_label["text"]
+        current_gesture = predicted_label.cget("text")
         if current_gesture.upper() in letters:
             is_letter_saved = True
             if is_letter_saved:
