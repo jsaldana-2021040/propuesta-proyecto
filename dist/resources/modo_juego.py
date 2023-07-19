@@ -8,6 +8,11 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from random import choice
 from tkinter import messagebox
+import customtkinter
+
+class modo_juego(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
 
 resources_path = getattr(sys, "_MEIPASS", "./resources")
 
@@ -104,7 +109,7 @@ def update_frame():
         label.config(image=image)
         label.image = image
 
-        predicted_label.config(text=predicted_character)
+        predicted_label.configure(text=predicted_character)
 
         if (
             predicted_character.upper() == current_letter.upper()
@@ -158,10 +163,15 @@ def show_success_message():
         success_window.geometry(f"300x100+{x}+{y}")
 
         success_label = tk.Label(success_window, text="Has acertado la letra.")
-        success_label.pack()
+        success_label.pack(pady=5)
 
-        accept_button = tk.Button(
-            success_window, text="Aceptar", command=success_window.destroy
+        accept_button = customtkinter.CTkButton(
+            success_window, text="Aceptar", 
+            width=200,
+            anchor="center",
+            font=("Roboto", 20),
+            height=40,
+            command=success_window.destroy
         )
         accept_button.pack()
 
@@ -182,14 +192,14 @@ def next_letter():
     is_message_shown = False
     is_letter_saved = False
     current_letter = choice(letters)
-    instruction_label.config(text="Haz la siguiente letra:")
-    letter_label.config(text=current_letter)
+    instruction_label.configure(text="Haz la siguiente letra:")
+    letter_label.configure(text=current_letter)
 
 
 def save_gesture(event):
     global current_letter, is_letter_saved
     if event.keysym == "space":
-        current_gesture = predicted_label["text"]
+        current_gesture = predicted_label.cget("text")
         if current_gesture.upper() in letters:
             is_letter_saved = True
             if is_letter_saved:
@@ -207,26 +217,60 @@ def save_gesture(event):
             messagebox.showinfo("Advertencia", "No se ha detectado ningún gesto")
     is_letter_saved = False
 
-window = tk.Tk()
+window = customtkinter.CTk()
 window.title("CamSingGT")
-window.geometry("1080x720")
-window.state('zoomed')
+window.geometry("900x755")
+window.update()
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+window_width = window.winfo_width()
+window_height = window.winfo_height()
+x = (screen_width - window_width) // 2
+y = (screen_height - window_height) // 2
+window.geometry(f"+{x}+{y}")
+
+#Creación de menú para la opción de cerrar ventana
+menu_frame = customtkinter.CTkFrame(window)
+menu_frame.pack(side='top', fill='x')
+
+opciones = tk.Menubutton(menu_frame,
+                         text="Opciones",
+                         background="#2b2b2b",
+                         foreground="white",
+                         activeforeground="black",
+                         activebackground="gray52")
+
+menu_superior = tk.Menu(opciones, tearoff=0)
+menu_superior.add_command(label="Salir", command=window.quit,
+                         background="#2b2b2b",
+                         foreground="white",
+                         activeforeground="black",
+                         activebackground="gray52")
+
+opciones.config(menu=menu_superior)
+opciones.pack(side="left")
 
 logo_path = os.path.join(resources_path, "logo.ico")
 window.iconbitmap(logo_path)
 window.wm_iconbitmap(logo_path)
 
-label = tk.Label(window)
-label.pack()
+frame = customtkinter.CTkFrame(master=window, corner_radius=8)
+frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-predicted_label = tk.Label(window, font=("Helvetica", 30))
-predicted_label.pack()
+label = tk.Label(frame)
+label.pack(pady=15)
 
-instruction_label = tk.Label(window, font=("Helvetica", 20), pady=20)
-instruction_label.pack()
+predicted_label = customtkinter.CTkLabel(frame, font=("Helvetica", 40))
+predicted_label.pack(pady=5)
 
-letter_label = tk.Label(window, font=("Helvetica", 30))
-letter_label.pack()
+instruction_label = customtkinter.CTkLabel(frame, font=("Helvetica", 20))
+instruction_label.pack(pady=5)
+
+letter_label = customtkinter.CTkLabel(frame, font=("Helvetica", 40), height=25)
+letter_label.pack(pady=5)
+
+backup_label = customtkinter.CTkLabel(frame, font=("Helvetica", 13), text="Preciona la tecla 'espacio' para evaluar.")
+backup_label.pack(pady=3)
 
 cap = cv2.VideoCapture(0)
 

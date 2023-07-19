@@ -6,6 +6,11 @@ import mediapipe as mp
 import numpy as np
 import tkinter as tk
 from PIL import Image, ImageTk
+import customtkinter
+
+class modo_normal(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
 
 resources_path = getattr(sys, "_MEIPASS", "./resources")
 
@@ -19,7 +24,6 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 labels_dict = {i: chr(65 + i) for i in range(26)}
 labels_dict[-1] = "Unknown"
-
 
 def predict_character(frame):
     data_aux = []
@@ -91,26 +95,60 @@ def update_frame():
         image = Image.fromarray(cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB))
         image = ImageTk.PhotoImage(image)
 
-        label.config(image=image)
+        label.configure(image=image)
         label.image = image
 
-        predicted_label.config(text=predicted_character)
+        predicted_label.configure(text=predicted_character)
 
     label.after(1, update_frame)
 
-window = tk.Tk()
+window = customtkinter.CTk()
 window.title("CamSingGT")
-window.geometry("800x600")
-window.state('zoomed')
+window.geometry("880x655")
+#window.after(0, lambda:window.state('zoomed'))
+window.update()
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+window_width = window.winfo_width()
+window_height = window.winfo_height()
+x = (screen_width - window_width) // 2
+y = (screen_height - window_height) // 2
+window.geometry(f"+{x}+{y}")
+#window.resizable(False, False)
+
+#Creación de menú para la opción de cerrar ventana
+menu_frame = customtkinter.CTkFrame(window)
+menu_frame.pack(side='top', fill='x')
+
+opciones = tk.Menubutton(menu_frame,
+                         text="Opciones",
+                         background="#2b2b2b",
+                         foreground="white",
+                         activeforeground="black",
+                         activebackground="gray52")
+
+menu_superior = tk.Menu(opciones, tearoff=0)
+menu_superior.add_command(label="Salir", command=window.quit,
+                         background="#2b2b2b",
+                         foreground="white",
+                         activeforeground="black",
+                         activebackground="gray52")
+
+opciones.config(menu=menu_superior)
+opciones.pack(side="left")
 
 logo_path = os.path.join(resources_path, "logo.ico")
 window.iconbitmap(logo_path)
 window.wm_iconbitmap(logo_path)
 
-label = tk.Label(window)
-label.place(x=360, y=100)
+frame = customtkinter.CTkFrame(master=window, corner_radius=8)
+frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-predicted_label = tk.Label(window, font=("Helvetica", 30))
+label = tk.Label(frame)
+#label.place(x=400, y=100)
+label.pack(padx=20, pady=20)
+
+predicted_label = customtkinter.CTkLabel(window, font=("Helvetica", 50), height=25  )
 predicted_label.pack()
 
 cap = cv2.VideoCapture(0)
