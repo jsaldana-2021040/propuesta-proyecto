@@ -27,7 +27,7 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 labels_dict = {i: chr(65 + i) for i in range(26)}
 labels_dict[-1] = "Unknown"
 
-letters = [chr(65 + i) for i in range(5)]
+letters = [chr(65 + i) for i in range(26)]
 
 current_letter = choice(letters)
 is_message_shown = False  # Variable para rastrear si el mensaje ya se ha mostrado
