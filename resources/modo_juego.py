@@ -272,6 +272,8 @@ letter_label.pack(pady=5)
 backup_label = customtkinter.CTkLabel(frame, font=("Helvetica", 13), text="Preciona la tecla 'espacio' para evaluar.")
 backup_label.pack(pady=3)
 
+window.state('zoomed')
+
 cap = cv2.VideoCapture(0)
 
 # Vincular el evento <KeyRelease-Return> a la función save_gesture()

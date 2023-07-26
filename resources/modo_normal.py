@@ -151,6 +151,8 @@ label.pack(padx=20, pady=20)
 predicted_label = customtkinter.CTkLabel(window, font=("Helvetica", 50), height=25  )
 predicted_label.pack()
 
+window.state('zoomed')
+
 cap = cv2.VideoCapture(0)
 
 # Iniciar la actualización del video
